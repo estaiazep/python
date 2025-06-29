@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SANTOS SIGNAL | Elite Trading Bot</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        /* Advanced Animated Background */
+        .bg-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: radial-gradient(circle at 20% 50%, #ff0080 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, #00ff41 0%, transparent 50%),
+                        radial-gradient(circle at 40% 80%, #0ff 0%, transparent 50%),
+                        linear-gradient(135deg, #000 0%, #1a0033 50%, #000 100%);
+            animation: backgroundPulse 8s ease-in-out infinite;
+        }
+        
+        @keyframes backgroundPulse {
+            0%, 100% { 
+                filter: brightness(0.8) contrast(1.2);
+                transform: scale(1);
+            }
+            50% { 
+                filter: brightness(1.2) contrast(1.5);
+                transform: scale(1.05);
+            }
+        }
+        
+        /* Floating Particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #00ff41;
+            border-radius: 50%;
+            animation: float linear infinite;
+            box-shadow: 0 0 10px #00ff41;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Grid Overlay */
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-image: 
+                linear-gradient(rgba(0, 255, 65, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 65, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+        }
+        
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+        
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 40px 0 20px;
+        }
+        
+        .logo {
+            font-family: 'Orbitron', monospace;
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #ff0080, #00ff41, #0ff, #ff0080);
+            background-size: 300% 300%;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: logoShine 3s ease-in-out infinite, logoFloat 6s ease-in-out infinite;
+            text-shadow: 0 0 50px rgba(255, 0, 128, 0.8);
+            margin-bottom: 10px;
+        }
+        
+        @keyframes logoShine {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .tagline {
+            font-size: 1.1rem;
+            color: #00ff41;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            animation: taglinePulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes taglinePulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+        
+        /* Main Content */
+        .main-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 50vh;
+            flex-direction: column;
+            text-align: center;
+            padding: 20px 0;
+        }
+        
+        .hero-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #fff, #ff0080, #00ff41);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: titleGlitch 4s ease-in-out infinite;
+            position: relative;
+        }
+        
+        @keyframes titleGlitch {
+            0%, 90%, 100% { transform: translate(0); }
+            92% { transform: translate(-2px, 2px); }
+            94% { transform: translate(2px, -2px); }
+            96% { transform: translate(-2px, -2px); }
+            98% { transform: translate(2px, 2px); }
+        }
+        
+        .hero-description {
+            font-size: 1.4rem;
+            color: #ccc;
+            margin-bottom: 40px;
+            max-width: 500px;
+            line-height: 1.5;
+            font-weight: 400;
+        }
+        
+        .profit-highlight {
+            color: #00ff41;
+            font-weight: 700;
+            text-shadow: 0 0 10px rgba(0, 255, 65, 0.8);
+        }
+        
+        /* Ultra Neon Button */
+        .access-btn {
+            position: relative;
+            display: inline-block;
+            padding: 25px 50px;
+            font-family: 'Orbitron', monospace;
+            font-size: 1.4rem;
+            font-weight: 700;
+            text-decoration: none;
+            color: #000;
+            background: linear-gradient(45deg, #00ff41, #0ff);
+            border: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            box-shadow: 
+                0 0 20px rgba(0, 255, 65, 0.6),
+                0 0 40px rgba(0, 255, 65, 0.4),
+                0 0 80px rgba(0, 255, 65, 0.2);
+            animation: buttonPulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes buttonPulse {
+            0%, 100% { 
+                transform: scale(1);
+                box-shadow: 
+                    0 0 20px rgba(0, 255, 65, 0.6),
+                    0 0 40px rgba(0, 255, 65, 0.4),
+                    0 0 80px rgba(0, 255, 65, 0.2);
+            }
+            50% { 
+                transform: scale(1.05);
+                box-shadow: 
+                    0 0 30px rgba(0, 255, 65, 0.8),
+                    0 0 60px rgba(0, 255, 65, 0.6),
+                    0 0 120px rgba(0, 255, 65, 0.4);
+            }
+        }
+        
+        .access-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s;
+        }
+        
+        .access-btn:hover::before {
+            left: 100%;
+        }
+        
+        .access-btn:hover {
+            transform: translateY(-5px) scale(1.1);
+            background: linear-gradient(45deg, #ff0080, #00ff41);
+            box-shadow: 
+                0 10px 30px rgba(0, 255, 65, 0.8),
+                0 0 60px rgba(255, 0, 128, 0.6),
+                0 0 120px rgba(0, 255, 65, 0.4);
+        }
+        
+        /* Features Grid - Always 3 in row */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 60px 0 40px;
+        }
+        
+        .feature-card {
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid rgba(0, 255, 65, 0.3);
+            border-radius: 20px;
+            padding: 25px 15px;
+            text-align: center;
+            backdrop-filter: blur(15px);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0, 255, 65, 0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.6s;
+            opacity: 0;
+        }
+        
+        .feature-card:hover::before {
+            opacity: 1;
+            animation: cardShine 1s ease-in-out;
+        }
+        
+        @keyframes cardShine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-15px) scale(1.05);
+            border-color: #00ff41;
+            box-shadow: 
+                0 15px 40px rgba(0, 255, 65, 0.4),
+                0 0 30px rgba(0, 255, 65, 0.6);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: #00ff41;
+            filter: drop-shadow(0 0 15px rgba(0, 255, 65, 0.8));
+            animation: iconFloat 3s ease-in-out infinite;
+        }
+        
+        @keyframes iconFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+        }
+        
+        .feature-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .feature-description {
+            color: #ccc;
+            line-height: 1.4;
+            font-weight: 400;
+            font-size: 0.95rem;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px 0;
+            border-top: 1px solid rgba(0, 255, 65, 0.3);
+            margin-top: 40px;
+        }
+        
+        .footer-text {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2.8rem;
+            }
+            
+            .hero-title {
+                font-size: 2.2rem;
+            }
+            
+            .hero-description {
+                font-size: 1.2rem;
+                padding: 0 10px;
+            }
+            
+            .access-btn {
+                padding: 20px 35px;
+                font-size: 1.2rem;
+            }
+            
+            .features {
+                gap: 15px;
+                margin: 40px 0 30px;
+            }
+            
+            .feature-card {
+                padding: 20px 10px;
+            }
+            
+            .feature-icon {
+                font-size: 2rem;
+                margin-bottom: 10px;
+            }
+            
+            .feature-title {
+                font-size: 1rem;
+                margin-bottom: 8px;
+            }
+            
+            .feature-description {
+                font-size: 0.85rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 2.2rem;
+            }
+            
+            .hero-title {
+                font-size: 1.8rem;
+            }
+            
+            .access-btn {
+                padding: 18px 30px;
+                font-size: 1.1rem;
+            }
+            
+            .features {
+                gap: 10px;
+            }
+            
+            .feature-card {
+                padding: 15px 8px;
+            }
+            
+            .feature-icon {
+                font-size: 1.8rem;
+            }
+            
+            .feature-title {
+                font-size: 0.9rem;
+            }
+            
+            .feature-description {
+                font-size: 0.8rem;
+            }
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #000;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, #00ff41, #0ff);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(45deg, #ff0080, #00ff41);
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-container"></div>
+    <div class="grid-overlay"></div>
+    <div class="particles" id="particles"></div>
+    
+    <div class="container">
+        <header class="header">
+            <h1 class="logo">SANTOS SIGNAL</h1>
+            <p class="tagline">Elite Trading Signals</p>
+        </header>
+        
+        <main class="main-content">
+            <h2 class="hero-title">GET RICH NOW</h2>
+            <p class="hero-description">
+                Join <span class="profit-highlight">1000+ traders</span> making 
+                <span class="profit-highlight">$500-5000 daily</span> with our AI-powered signals
+            </p>
+            <a href="https://t.me/signalverif_bot" class="access-btn" id="accessBtn">
+                🚀 START EARNING
+            </a>
+        </main>
+        
+        <section class="features">
+            <div class="feature-card">
+                <div class="feature-icon">🔐</div>
+                <h3 class="feature-title">SECURE</h3>
+                <p class="feature-description">
+                    Bank-level encryption protects your data
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3 class="feature-title">INSTANT</h3>
+                <p class="feature-description">
+                    Real-time signals delivered in milliseconds
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3 class="feature-title">ACCURATE</h3>
+                <p class="feature-description">
+                    95% win rate with AI predictions
+                </p>
+            </div>
+        </section>
+    </div>
+    
+    <footer class="footer">
+        <p class="footer-text">© 2024 SANTOS SIGNAL. All rights reserved.</p>
+    </footer>
+    
+    <script>
+        // Create floating particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const colors = ['#00ff41', '#0ff', '#ff0080'];
+            
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDuration = (Math.random() * 10 + 5) + 's';
+                particle.style.animationDelay = Math.random() * 5 + 's';
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.boxShadow = `0 0 10px ${colors[Math.floor(Math.random() * colors.length)]}`;
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        // Enhanced button click effect
+        document.getElementById('accessBtn').addEventListener('click', function(e) {
+            // Create multiple ripples
+            for (let i = 0; i < 3; i++) {
+                setTimeout(() => {
+                    const ripple = document.createElement('span');
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height) * (1 + i * 0.5);
+                    const x = e.clientX - rect.left - size / 2;
+                    const y = e.clientY - rect.top - size / 2;
+                    
+                    ripple.style.width = ripple.style.height = size + 'px';
+                    ripple.style.left = x + 'px';
+                    ripple.style.top = y + 'px';
+                    ripple.style.position = 'absolute';
+                    ripple.style.borderRadius = '50%';
+                    ripple.style.background = `rgba(${i === 0 ? '0, 255, 65' : i === 1 ? '0, 255, 255' : '255, 0, 128'}, 0.6)`;
+                    ripple.style.transform = 'scale(0)';
+                    ripple.style.animation = 'ripple 0.8s linear';
+                    ripple.style.pointerEvents = 'none';
+                    ripple.style.zIndex = '1000';
+                    
+                    this.appendChild(ripple);
+                    
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 800);
+                }, i * 100);
+            }
+        });
+        
+        // Add ripple animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Initialize particles
+        createParticles();
+        
+        // Recreate particles periodically
+        setInterval(() => {
+            const particles = document.getElementById('particles');
+            particles.innerHTML = '';
+            createParticles();
+        }, 15000);
+        
+        // Add mouse movement parallax effect
+        document.addEventListener('mousemove', function(e) {
+            const mouseX = e.clientX / window.innerWidth;
+            const mouseY = e.clientY / window.innerHeight;
+            
+            const bgContainer = document.querySelector('.bg-container');
+            const gridOverlay = document.querySelector('.grid-overlay');
+            
+            bgContainer.style.transform = `translate(${mouseX * 20}px, ${mouseY * 20}px)`;
+            gridOverlay.style.transform = `translate(${mouseX * -10}px, ${mouseY * -10}px)`;
+        });
+        
+        // Add scroll animations
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const rate = scrolled * -0.5;
+            
+            const bgContainer = document.querySelector('.bg-container');
+            bgContainer.style.transform = `translateY(${rate}px)`;
+        });
+        
+        // Performance optimization - reduce animations on mobile
+        if (window.innerWidth <= 768) {
+            document.querySelector('.bg-container').style.animation = 'none';
+            document.querySelector('.grid-overlay').style.animation = 'none';
+        }
+    </script>
+</body>
+</html>
